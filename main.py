@@ -2,7 +2,7 @@ import pygame
 pygame.init()
 
 screen = pygame.display.set_mode((800, 600))
-pygame.display.set_caption("Test #8")
+pygame.display.set_caption("Test #9")
 clock = pygame.time.Clock()
 running = True
 
@@ -76,6 +76,17 @@ while running:
             if world[r][c] == 1:
                 pygame.draw.rect(screen, dirt_color, (c * tile_size, r * tile_size, tile_size, tile_size))
     pygame.draw.rect(screen, (255, 255, 255), (player_x, player_y, player_width, player_height))
+    mouse_x, mouse_y = pygame.mouse.get_pos()
+    tile_x = mouse_x // tile_size
+    tile_y = mouse_y // tile_size
+    if 0 <= tile_x < collumns and 0 <= tile_y < rows:
+        player_center_x = player_x + player_width // 2
+        player_center_y = player_y + player_height // 2
+        tile_center_x = tile_x * tile_size + tile_size // 2
+        tile_center_y = tile_y * tile_size + tile_size // 2
+        distance = ((player_center_x - tile_center_x) ** 2 + (player_center_y - tile_center_y) ** 2) ** 0.5
+        if distance <= max_reach and world[tile_y][tile_x] == 1:
+            pygame.draw.rect(screen, (255, 255, 0), (tile_x * tile_size, tile_y * tile_size, tile_size, tile_size), 2)
     pygame.display.flip()
     clock.tick(60)
 pygame.quit()
