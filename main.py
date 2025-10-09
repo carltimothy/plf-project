@@ -36,6 +36,14 @@ player_color = (255, 255, 255)
 
 while running:
     for event in pygame.event.get():
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1:
+                mouse_x, mouse_y = pygame.mouse.get_pos()
+                tile_x = mouse_x // tile_size
+                tile_y = mouse_y // tile_size
+                if 0 <= tile_x < collumns and 0 <= tile_y < rows:
+                    if world[tile_y][tile_x] == 1:
+                        world[tile_y][tile_x] = 0
         if event.type == pygame.QUIT:
             running = False
     keys = pygame.key.get_pressed()
