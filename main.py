@@ -2,7 +2,7 @@ import pygame
 pygame.init()
 
 screen = pygame.display.set_mode((800, 600))
-pygame.display.set_caption("Test #5")
+pygame.display.set_caption("Test #7")
 clock = pygame.time.Clock()
 running = True
 
@@ -15,6 +15,24 @@ gravity = 0.8
 velocity_y = 0
 on_ground = False
 ground_level = 600 - 50
+
+tile_size = 32
+collumns = 800 // tile_size
+rows = 600 // tile_size
+world = []
+
+for row in range(rows):
+    line = []
+    for col in range(collumns):
+        if row > 12: 
+            line.append(1)
+        else:
+            line.append(0)
+    world.append(line)
+
+sky_color = (135, 206, 235)
+dirt_color = (139, 69, 19)
+player_color = (255, 255, 255)
 
 while running:
     for event in pygame.event.get():
@@ -30,12 +48,23 @@ while running:
         on_ground = False
     velocity_y += gravity
     player_y += velocity_y
-    if player_y + player_height >= ground_level:
-        player_y = ground_level - player_height
-        on_ground = True
-        velocity_y = 0
+    player_rect = pygame.Rect(player_x, player_y, player_width, player_height)
+    on_ground = False
+    for r in range(rows):
+        for c in range(collumns):
+            if world[r][c] == 1:
+                block_rect = pygame.Rect(c * tile_size, r * tile_size, tile_size, tile_size)
+                if player_rect.colliderect(block_rect):
+                    if velocity_y > 0 and player_rect.bottom > block_rect.top:
+                        player_rect.bottom = block_rect.top
+                        velocity_y = 0
+                        on_ground = True
+    player_y = player_rect.y
     screen.fill((135, 206, 235))
-    pygame.draw.rect(screen, (34, 139, 34), (0, ground_level, 800, 50))
+    for r in range(rows):
+        for c in range(collumns):
+            if world[r][c] == 1:
+                pygame.draw.rect(screen, dirt_color, (c * tile_size, r * tile_size, tile_size, tile_size))
     pygame.draw.rect(screen, (255, 255, 255), (player_x, player_y, player_width, player_height))
     pygame.display.flip()
     clock.tick(60)
