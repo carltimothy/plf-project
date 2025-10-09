@@ -2,7 +2,7 @@ import pygame
 pygame.init()
 
 screen = pygame.display.set_mode((800, 600))
-pygame.display.set_caption("Test #7")
+pygame.display.set_caption("Test #8")
 clock = pygame.time.Clock()
 running = True
 
@@ -14,13 +14,15 @@ jump_strength = 15
 gravity = 0.8
 velocity_y = 0
 on_ground = False
+max_reach = 150
+sky_color = (135, 206, 235)
+dirt_color = (139, 69, 19)
+player_color = (255, 255, 255)
 ground_level = 600 - 50
-
 tile_size = 32
 collumns = 800 // tile_size
 rows = 600 // tile_size
 world = []
-
 for row in range(rows):
     line = []
     for col in range(collumns):
@@ -29,23 +31,23 @@ for row in range(rows):
         else:
             line.append(0)
     world.append(line)
-
-sky_color = (135, 206, 235)
-dirt_color = (139, 69, 19)
-player_color = (255, 255, 255)
-
 while running:
     for event in pygame.event.get():
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1:
-                mouse_x, mouse_y = pygame.mouse.get_pos()
-                tile_x = mouse_x // tile_size
-                tile_y = mouse_y // tile_size
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    mouse_x, mouse_y = pygame.mouse.get_pos()
+                    tile_x = mouse_x // tile_size
+                    tile_y = mouse_y // tile_size
                 if 0 <= tile_x < collumns and 0 <= tile_y < rows:
-                    if world[tile_y][tile_x] == 1:
+                    player_center_x = player_x + player_width // 2
+                    player_center_y = player_y + player_height // 2
+                    tile_center_x = tile_x * tile_size + tile_size // 2
+                    tile_center_y = tile_y * tile_size + tile_size // 2
+                    distance = ((player_center_x - tile_center_x) ** 2 + (player_center_y - tile_center_y) ** 2) ** 0.5
+                    if distance <= max_reach and world[tile_y][tile_x] == 1:
                         world[tile_y][tile_x] = 0
-        if event.type == pygame.QUIT:
-            running = False
+    if event.type == pygame.QUIT:
+        running = False
     keys = pygame.key.get_pressed()
     if keys[pygame.K_a] or keys[pygame.K_LEFT]:
         player_x -= player_speed
