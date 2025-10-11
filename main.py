@@ -33,7 +33,7 @@ for row in range(rows):
             line.append(0)
     world.append(line)
 npc_rect = pygame.Rect(600, (13 * tile_size) - player_height, 40, 60) 
-npc_color = (255, 200, 0)
+npc_color = (255, 0, 0)
 quest_active = False
 question = "What is 5 + 7?"
 answer = "12"
