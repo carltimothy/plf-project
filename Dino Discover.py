@@ -1,5 +1,6 @@
 import pygame
-import time 
+import subprocess
+import os
 pygame.init()
 
 screen = pygame.display.set_mode((800, 600))
@@ -13,17 +14,17 @@ GRAY = (200, 200, 200)
 YELLOW = (255, 230, 100)
 title_font = pygame.font.Font(None, 72)
 button_font = pygame.font.Font(None, 48)
-dino_img = pygame.image.load("assets/dinosaurus.png").convert_alpha()
-nugget_img = pygame.image.load("assets/nuggies.png").convert_alpha()
-dino_img = pygame.transform.scale(dino_img, (80, 80))
-nugget_img = pygame.transform.scale(nugget_img, (50, 50))
-dino_rect = dino_img.get_rect(topleft=(100, 600 - 150))
+dino_img = pygame.image.load('D:/output/Cute-Dinosaur.png').convert_alpha()
+nugget_img = pygame.image.load('D:/output/nuggies.webp').convert_alpha()
+dino_img = pygame.transform.scale(dino_img, (500, 500))
+nugget_img = pygame.transform.scale(nugget_img, (100, 90))
+dino_rect = dino_img.get_rect(topleft=(450, 350 - 150))
+nugget_rect = nugget_img.get_rect(topleft=(250, 600 - 120))
 nugget_rect = nugget_img.get_rect(topleft=(250, 600 - 120))
 play_btn = pygame.Rect(800 / 2 - 220, 600 / 2 - 40, 150, 60)
 menu_btn = pygame.Rect(800 / 2 - 50, 600 / 2 - 40, 150, 60)
 settings_btn = pygame.Rect(800 / 2 + 120, 600 / 2 - 40, 150, 60)
 clock = pygame.time.Clock()
-running = True
 while running:
     screen.fill(WHITE)
     for event in pygame.event.get():
@@ -32,21 +33,18 @@ while running:
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if play_btn.collidepoint(event.pos):
                 print("Play clicked!")
+                os.system("C:/Users/STUDENTS/AppData/Local/Programs/Python/Python311/python.exe D:/output/play.py")
+                exit()
             elif menu_btn.collidepoint(event.pos):
                 print("Menu clicked!")
-            elif settings_btn.collidepoint(event.pos):
-                print("Settings clicked!")
     title_text = title_font.render("Welcome to Dino Discover!", True, BLACK)
     screen.blit(title_text, (800 / 2 - title_text.get_width() / 2, 100))
     pygame.draw.rect(screen, BLUE, play_btn)
     pygame.draw.rect(screen, GRAY, menu_btn)
-    pygame.draw.rect(screen, YELLOW, settings_btn)
     play_text = button_font.render("PLAY", True, WHITE)
     menu_text = button_font.render("MENU", True, BLACK)
-    settings_text = button_font.render("SETTINGS", True, BLACK)
     screen.blit(play_text, (play_btn.x + 25, play_btn.y + 10))
     screen.blit(menu_text, (menu_btn.x + 25, menu_btn.y + 10))
-    screen.blit(settings_text, (settings_btn.x + 55, settings_btn.y + 10))
     screen.blit(dino_img, dino_rect)
     screen.blit(nugget_img, nugget_rect)
     pygame.display.flip()
