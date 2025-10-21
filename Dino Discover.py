@@ -2,10 +2,10 @@ import pygame
 import os
 pygame.init()
 
-icon = pygame.image.load("D:/output/Cute-Dinosaur-Left.png")
+icon = pygame.image.load("assets/Cute-Dinosaur-Left.png")
 pygame.display.set_icon(icon)
 screen = pygame.display.set_mode((800, 600))
-pygame.display.set_caption("Dino Discover!")
+pygame.display.set_caption("Dino Discovery!")
 clock = pygame.time.Clock()
 running = True
 WHITE = (255, 255, 255)
@@ -15,11 +15,11 @@ ORANGE = (255, 153, 51)
 title_font = pygame.font.Font(None, 48)
 button_font = pygame.font.Font(None, 48)
 settings_button_font = pygame.font.Font(None, 40)
-bg_img = pygame.image.load('D:/output/menu.jpeg').convert()
+bg_img = pygame.image.load('assets/menu.jpeg').convert()
 bg_img = pygame.transform.scale(bg_img, (800, 600))
-dino_img = pygame.image.load('D:/output/Cute-Dinosaur.png').convert_alpha()
-dino_left_img = pygame.image.load('D:/output/Cute-Dinosaur-Left.png').convert_alpha()
-nugget_img = pygame.image.load('D:/output/nuggies.webp').convert_alpha()
+dino_img = pygame.image.load('assets/Cute-Dinosaur.png').convert_alpha()
+dino_left_img = pygame.image.load('assets/Cute-Dinosaur-Left.png').convert_alpha()
+nugget_img = pygame.image.load('assets/nuggies.webp').convert_alpha()
 dino_img = pygame.transform.scale(dino_img, (500, 500))
 dino_left_img = pygame.transform.scale(dino_left_img, (500, 500))
 nugget_img = pygame.transform.scale(nugget_img, (100, 90))
@@ -39,7 +39,7 @@ while running:
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if play_btn.collidepoint(event.pos):
                 print("Play")
-                os.system("C:/Users/STUDENTS/AppData/Local/Programs/Python/Python311/python.exe D:/output/play.py")
+                os.system("C:/Users/STUDENTS/AppData/Local/Programs/Python/Python311/python.exe assets/play.py")
             elif menu_btn.collidepoint(event.pos):
                 print("Settings")
     pygame.draw.rect(screen, WHITE, menu_box, border_radius=20)
