@@ -2,17 +2,16 @@ import pygame
 import os
 pygame.init()
 
+icon = pygame.image.load("D:/output/Cute-Dinosaur-Left.png")
+pygame.display.set_icon(icon)
 screen = pygame.display.set_mode((800, 600))
 pygame.display.set_caption("Dino Discover!")
 clock = pygame.time.Clock()
 running = True
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
-BLUE = (100, 150, 255)
 PURPLE = (221, 51, 255)
 ORANGE = (255, 153, 51)
-GRAY = (200, 200, 200)
-YELLOW = (255, 230, 100)
 title_font = pygame.font.Font(None, 48)
 button_font = pygame.font.Font(None, 48)
 settings_button_font = pygame.font.Font(None, 40)
@@ -26,7 +25,8 @@ dino_left_img = pygame.transform.scale(dino_left_img, (500, 500))
 nugget_img = pygame.transform.scale(nugget_img, (100, 90))
 dino_rect = dino_img.get_rect(topleft=(550, 200))
 dino_rect_left = dino_left_img.get_rect(topleft=(-250, 200))
-nuggets_positions = [(20, 100), (700, 120), (150, 500), (600, 480), (400, 20)]
+nuggets_positions = [(0, 100), (175, 10), (700, 120), (275, 470),
+                     (150, 500), (420, 495), (550, 480), (400, 20), (600, 20)]
 play_btn = pygame.Rect(800 / 2 - 200, 600 / 2 + 60, 150, 60)
 menu_btn = pygame.Rect(800 / 2 + 50, 600 / 2 + 60, 150, 60)
 menu_box = pygame.Rect(100, 120, 600, 350)

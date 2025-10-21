@@ -1,2 +1,3 @@
 wrong - https://www.shutterstock.com/image-vector/danger-dinosaur-making-flame-color-260nw-1085117939.jpg
 main menu bg - https://www.freepik.com/premium-vector/pixel-background-with-forest-games-mobile-applications-seamless-when-docking-horizontally_132089748.htm
+script = pyinstaller --onefile --hide-console hide-early -i C:\Users\STUDENTS\Downloads\Cute-Dinosaur-Left.ico --add-data "D:\output\play.py;." D:\output\dinodiscover.py
