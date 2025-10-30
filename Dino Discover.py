@@ -1,5 +1,4 @@
 import pygame
-import os
 
 pygame.init()
 icon = pygame.image.load("assets/Cute-Dinosaur-Left.png")
@@ -21,10 +20,16 @@ dino_img = pygame.image.load('assets/Cute-Dinosaur.png').convert_alpha()
 dino_left_img = pygame.image.load('assets/Cute-Dinosaur-Left.png').convert_alpha()
 nugget_img = pygame.image.load('assets/nuggies.webp').convert_alpha()
 button_bg = pygame.image.load('assets/button-large.png').convert_alpha()
+main_ui_img = pygame.image.load('assets/main-ui.png').convert_alpha()
+check_img = pygame.image.load('assets/check.gif').convert_alpha()
+x_img = pygame.image.load('assets/x.gif').convert_alpha()
 dino_img = pygame.transform.scale(dino_img, (500, 500))
 dino_left_img = pygame.transform.scale(dino_left_img, (500, 500))
 nugget_img = pygame.transform.scale(nugget_img, (100, 90))
 button_bg = pygame.transform.scale(button_bg, (150, 60))
+main_ui_img = pygame.transform.scale(main_ui_img, (600, 350))
+check_img = pygame.transform.scale(check_img, (80, 80))
+x_img = pygame.transform.scale(x_img, (80, 80))
 pygame.mixer.music.load("assets/bg_music.mp3")
 pygame.mixer.music.set_volume(0.5)
 pygame.mixer.music.play(-1)
@@ -36,8 +41,36 @@ play_btn = pygame.Rect(800 / 2 - 200, 600 / 2 + 60, 150, 60)
 menu_btn = pygame.Rect(800 / 2 + 50, 600 / 2 + 60, 150, 60)
 menu_box = pygame.Rect(100, 120, 600, 350)
 in_settings = False
+in_difficulty = False
+in_quiz = False
 volume_slider = pygame.Rect(300, 300, 200, 10)
 volume_knob_x = 400
+easy_btn = pygame.Rect(800 / 2 - 225, 300, 150, 60)
+normal_btn = pygame.Rect(800 / 2 - 75, 300, 150, 60)
+hard_btn = pygame.Rect(800 / 2 + 75, 300, 150, 60)
+font_q = pygame.font.Font(None, 40)
+font_a = pygame.font.Font(None, 35)
+questions = [
+    {"q":"question1","choices":["ans1","ans2","ans3","ans4"],"answer":"ans3"},
+    {"q":"question2","choices":["ans1","ans2","ans3","ans4"],"answer":"ans2"},
+    {"q":"question3","choices":["ans1","ans2","ans3","ans4"],"answer":"ans2"}
+]
+current_q = 0
+show_feedback = False
+feedback_time = 0
+feedback_correct = False
+answered = False
+def get_answer_buttons():
+    btns = []
+    start_x, start_y = 210, 240
+    w, h = 200, 60
+    gap_x, gap_y = 220, 80
+    for i in range(4):
+        col = i % 2
+        row = i // 2
+        rect = pygame.Rect(start_x + col * gap_x, start_y + row * gap_y, w, h)
+        btns.append(rect)
+    return btns
 def draw_main_menu():
     screen.blit(bg_img, (0, 0))
     pygame.draw.rect(screen, WHITE, menu_box, border_radius=20)
@@ -72,19 +105,82 @@ def draw_settings_menu(volume_knob_x):
     back_text = button_font.render("BACK", True, BLACK)
     screen.blit(back_text, (back_btn.centerx - back_text.get_width() / 2, back_btn.centery - back_text.get_height() / 2))
     return back_btn
+def draw_difficulty_menu():
+    screen.blit(bg_img, (0, 0))
+    screen.blit(main_ui_img, (100, 120))
+    title_text = title_font.render("Select Difficulty", True, BLACK)
+    screen.blit(title_text, (400 - title_text.get_width() / 2, 180))
+    screen.blit(button_bg, easy_btn)
+    screen.blit(button_bg, normal_btn)
+    screen.blit(button_bg, hard_btn)
+    easy_text = button_font.render("EASY", True, BLACK)
+    normal_text = button_font.render("NORMAL", True, BLACK)
+    hard_text = button_font.render("HARD", True, BLACK)
+    screen.blit(easy_text, (easy_btn.centerx - easy_text.get_width() / 2, easy_btn.centery - easy_text.get_height() / 2))
+    screen.blit(normal_text, (normal_btn.centerx - normal_text.get_width() / 2, normal_btn.centery - normal_text.get_height() / 2))
+    screen.blit(hard_text, (hard_btn.centerx - hard_text.get_width() / 2, hard_btn.centery - hard_text.get_height() / 2))
+    back_btn = pygame.Rect(800 / 2 - 75, 450, 150, 60)
+    screen.blit(button_bg, back_btn)
+    back_text = button_font.render("BACK", True, BLACK)
+    screen.blit(back_text, (back_btn.centerx - back_text.get_width() / 2, back_btn.centery - back_text.get_height() / 2))
+    return back_btn
+def draw_easy_quiz():
+    global show_feedback, feedback_correct, feedback_time, current_q, answered
+    screen.blit(bg_img, (0, 0))
+    screen.blit(main_ui_img, (100, 120))
+    if current_q < len(questions):
+        q = questions[current_q]
+        words = q["q"].split(" ")
+        lines = []
+        line = ""
+        for word in words:
+            test_line = line + word + " "
+            if font_q.size(test_line)[0] < 500:
+                line = test_line
+            else:
+                lines.append(line)
+                line = word + " "
+        lines.append(line)
+        y_offset = 170
+        for l in lines:
+            q_text = font_q.render(l.strip(), True, BLACK)
+            screen.blit(q_text, (400 - q_text.get_width() / 2, y_offset))
+            y_offset += q_text.get_height() + 5
+        answer_btns = get_answer_buttons()
+        for i, c in enumerate(q["choices"]):
+            btn = answer_btns[i]
+            screen.blit(button_bg, btn)
+            max_width = btn.width - 65
+            txt_surface = font_a.render(c, True, BLACK)
+            if txt_surface.get_width() > max_width:
+                scale = max_width / txt_surface.get_width()
+                new_size = max(20, int(font_a.size(c)[1] * scale))
+                temp_font = pygame.font.Font(None, new_size)
+                txt_surface = temp_font.render(c, True, BLACK)
+            screen.blit(txt_surface, (btn.centerx - txt_surface.get_width() / 2 - 25, btn.centery - txt_surface.get_height() / 2 - 3))
+    else:
+        done_txt = font_q.render(".......!", True, BLACK)
+        screen.blit(done_txt, (400 - done_txt.get_width() / 2, 280))
+    if show_feedback:
+        img = check_img if feedback_correct else x_img
+        screen.blit(img, (360, 240))
+        if pygame.time.get_ticks() - feedback_time > 1000:
+            show_feedback = False
+            answered = False
+            if feedback_correct:
+                current_q += 1
 while running:
     screen.fill(WHITE)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            if not in_settings:
+            if not in_settings and not in_difficulty and not in_quiz:
                 if play_btn.collidepoint(event.pos):
-                    print("Play")
-                    os.system('play.py')
+                    in_difficulty = True
                 elif menu_btn.collidepoint(event.pos):
                     in_settings = True
-            else:
+            elif in_settings:
                 back_btn = pygame.Rect(800 / 2 - 75, 600 / 2 + 60, 150, 60)
                 if back_btn.collidepoint(event.pos):
                     in_settings = False
@@ -92,15 +188,36 @@ while running:
                     volume_knob_x = min(max(event.pos[0], volume_slider.x), volume_slider.x + volume_slider.width)
                     volume = (volume_knob_x - volume_slider.x) / volume_slider.width
                     pygame.mixer.music.set_volume(volume if volume > 0 else 0)
+            elif in_difficulty:
+                back_btn = pygame.Rect(800 / 2 - 75, 450, 150, 60)
+                if back_btn.collidepoint(event.pos):
+                    in_difficulty = False
+                elif easy_btn.collidepoint(event.pos):
+                    in_difficulty = False
+                    in_quiz = True
+            elif in_quiz and not show_feedback and not answered:
+                if current_q < len(questions):
+                    answer_btns = get_answer_buttons()
+                    for i, btn in enumerate(answer_btns):
+                        if btn.collidepoint(event.pos):
+                            selected = questions[current_q]["choices"][i]
+                            feedback_correct = (selected == questions[current_q]["answer"])
+                            show_feedback = True
+                            feedback_time = pygame.time.get_ticks()
+                            answered = True
         elif event.type == pygame.MOUSEMOTION and in_settings and event.buttons[0]:
             if volume_slider.collidepoint(event.pos[0], volume_slider.y):
                 volume_knob_x = min(max(event.pos[0], volume_slider.x), volume_slider.x + volume_slider.width)
                 volume = (volume_knob_x - volume_slider.x) / volume_slider.width
                 pygame.mixer.music.set_volume(volume if volume > 0 else 0)
-    if not in_settings:
+    if not in_settings and not in_difficulty and not in_quiz:
         draw_main_menu()
-    else:
+    elif in_settings:
         back_btn = draw_settings_menu(volume_knob_x)
+    elif in_difficulty:
+        back_btn = draw_difficulty_menu()
+    elif in_quiz:
+        draw_easy_quiz()
     pygame.display.flip()
     clock.tick(60)
 pygame.quit()
