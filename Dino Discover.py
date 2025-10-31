@@ -50,11 +50,22 @@ normal_btn = pygame.Rect(800 / 2 - 75, 300, 150, 60)
 hard_btn = pygame.Rect(800 / 2 + 75, 300, 150, 60)
 font_q = pygame.font.Font(None, 40)
 font_a = pygame.font.Font(None, 35)
-questions = [
+easy_questions = [
     {"q":"question1","choices":["ans1","ans2","ans3","ans4"],"answer":"ans3"},
     {"q":"question2","choices":["ans1","ans2","ans3","ans4"],"answer":"ans2"},
     {"q":"question3","choices":["ans1","ans2","ans3","ans4"],"answer":"ans2"}
 ]
+normal_questions = [
+    {"q":"question1normal","choices":["ans1","ans2","ans3","ans4"],"answer":"ans1"},
+    {"q":"question2normal","choices":["ans1","ans2","ans3","ans4"],"answer":"ans2"},
+    {"q":"question3normal","choices":["ans1","ans2","ans3","ans4"],"answer":"ans3"}
+]
+hard_questions = [
+    {"q":"question1hard","choices":["ans1","ans2","ans3","ans4"],"answer":"ans4"},
+    {"q":"question2hard","choices":["ans1","ans2","ans3","ans4"],"answer":"ans3"},
+    {"q":"question3hard","choices":["ans1","ans2","ans3","ans4"],"answer":"ans2"}
+]
+difficulty = None
 current_q = 0
 show_feedback = False
 feedback_time = 0
@@ -128,8 +139,8 @@ def draw_easy_quiz():
     global show_feedback, feedback_correct, feedback_time, current_q, answered
     screen.blit(bg_img, (0, 0))
     screen.blit(main_ui_img, (100, 120))
-    if current_q < len(questions):
-        q = questions[current_q]
+    if current_q < len(easy_questions):
+        q = easy_questions[current_q]
         words = q["q"].split(" ")
         lines = []
         line = ""
@@ -169,6 +180,96 @@ def draw_easy_quiz():
             answered = False
             if feedback_correct:
                 current_q += 1
+def draw_normal_quiz():
+    global show_feedback, feedback_correct, feedback_time, current_q, answered
+    screen.blit(bg_img, (0, 0))
+    screen.blit(main_ui_img, (100, 120))
+    if current_q < len(normal_questions):
+        q = normal_questions[current_q]
+        words = q["q"].split(" ")
+        lines = []
+        line = ""
+        for word in words:
+            test_line = line + word + " "
+            if font_q.size(test_line)[0] < 500:
+                line = test_line
+            else:
+                lines.append(line)
+                line = word + " "
+        lines.append(line)
+        y_offset = 170
+        for l in lines:
+            q_text = font_q.render(l.strip(), True, BLACK)
+            screen.blit(q_text, (400 - q_text.get_width() / 2, y_offset))
+            y_offset += q_text.get_height() + 5
+        answer_btns = get_answer_buttons()
+        for i, c in enumerate(q["choices"]):
+            btn = answer_btns[i]
+            screen.blit(button_bg, btn)
+            max_width = btn.width - 65
+            txt_surface = font_a.render(c, True, BLACK)
+            if txt_surface.get_width() > max_width:
+                scale = max_width / txt_surface.get_width()
+                new_size = max(20, int(font_a.size(c)[1] * scale))
+                temp_font = pygame.font.Font(None, new_size)
+                txt_surface = temp_font.render(c, True, BLACK)
+            screen.blit(txt_surface, (btn.centerx - txt_surface.get_width() / 2 - 25, btn.centery - txt_surface.get_height() / 2 - 3))
+    else:
+        done_txt = font_q.render("q2 done!", True, BLACK)
+        screen.blit(done_txt, (400 - done_txt.get_width() / 2, 280))
+    if show_feedback:
+        img = check_img if feedback_correct else x_img
+        screen.blit(img, (360, 240))
+        if pygame.time.get_ticks() - feedback_time > 1000:
+            show_feedback = False
+            answered = False
+            if feedback_correct:
+                current_q += 1
+def draw_hard_quiz():
+    global show_feedback, feedback_correct, feedback_time, current_q, answered
+    screen.blit(bg_img, (0, 0))
+    screen.blit(main_ui_img, (100, 120))
+    if current_q < len(hard_questions):
+        q = hard_questions[current_q]
+        words = q["q"].split(" ")
+        lines = []
+        line = ""
+        for word in words:
+            test_line = line + word + " "
+            if font_q.size(test_line)[0] < 500:
+                line = test_line
+            else:
+                lines.append(line)
+                line = word + " "
+        lines.append(line)
+        y_offset = 170
+        for l in lines:
+            q_text = font_q.render(l.strip(), True, BLACK)
+            screen.blit(q_text, (400 - q_text.get_width() / 2, y_offset))
+            y_offset += q_text.get_height() + 5
+        answer_btns = get_answer_buttons()
+        for i, c in enumerate(q["choices"]):
+            btn = answer_btns[i]
+            screen.blit(button_bg, btn)
+            max_width = btn.width - 65
+            txt_surface = font_a.render(c, True, BLACK)
+            if txt_surface.get_width() > max_width:
+                scale = max_width / txt_surface.get_width()
+                new_size = max(20, int(font_a.size(c)[1] * scale))
+                temp_font = pygame.font.Font(None, new_size)
+                txt_surface = temp_font.render(c, True, BLACK)
+            screen.blit(txt_surface, (btn.centerx - txt_surface.get_width() / 2 - 25, btn.centery - txt_surface.get_height() / 2 - 3))
+    else:
+        done_txt = font_q.render("hard questions done!", True, BLACK)
+        screen.blit(done_txt, (400 - done_txt.get_width() / 2, 280))
+    if show_feedback:
+        img = check_img if feedback_correct else x_img
+        screen.blit(img, (360, 240))
+        if pygame.time.get_ticks() - feedback_time > 1000:
+            show_feedback = False
+            answered = False
+            if feedback_correct:
+                current_q += 1
 while running:
     screen.fill(WHITE)
     for event in pygame.event.get():
@@ -193,15 +294,33 @@ while running:
                 if back_btn.collidepoint(event.pos):
                     in_difficulty = False
                 elif easy_btn.collidepoint(event.pos):
+                    difficulty = "easy"
+                    in_difficulty = False
+                    in_quiz = True
+                elif normal_btn.collidepoint(event.pos):
+                    difficulty = "normal"
+                    in_difficulty = False
+                    in_quiz = True
+                elif hard_btn.collidepoint(event.pos):
+                    difficulty = "hard"
                     in_difficulty = False
                     in_quiz = True
             elif in_quiz and not show_feedback and not answered:
-                if current_q < len(questions):
+                answer_btns = get_answer_buttons()
+                if difficulty == "easy":
+                    set = easy_questions
+                elif difficulty == "normal":
+                    set = normal_questions
+                elif difficulty == "hard":
+                    set = hard_questions
+                else:
+                    set = []
+                if current_q < len(set):
                     answer_btns = get_answer_buttons()
                     for i, btn in enumerate(answer_btns):
                         if btn.collidepoint(event.pos):
-                            selected = questions[current_q]["choices"][i]
-                            feedback_correct = (selected == questions[current_q]["answer"])
+                            selected = set[current_q]["choices"][i]
+                            feedback_correct = (selected ==set[current_q]["answer"])
                             show_feedback = True
                             feedback_time = pygame.time.get_ticks()
                             answered = True
@@ -217,7 +336,12 @@ while running:
     elif in_difficulty:
         back_btn = draw_difficulty_menu()
     elif in_quiz:
-        draw_easy_quiz()
+        if difficulty == "easy":
+            draw_easy_quiz()
+        elif difficulty == "normal":
+            draw_normal_quiz()
+        elif difficulty == "hard":
+            draw_hard_quiz()
     pygame.display.flip()
     clock.tick(60)
 pygame.quit()
