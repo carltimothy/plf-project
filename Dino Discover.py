@@ -123,7 +123,7 @@ def draw_settings_menu(volume_knob_x):
 def draw_difficulty_menu():
     screen.blit(bg_img, (0, 0))
     screen.blit(main_ui_img, (100, 120))
-    title_text = title_font.render("Select Difficulty", True, BLACK)
+    title_text = title_font.render("Select Difficulty", True, WHITE)
     screen.blit(title_text, (400 - title_text.get_width() / 2, 180))
     screen.blit(button_bg, easy_btn)
     screen.blit(button_bg, normal_btn)
