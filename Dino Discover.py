@@ -65,6 +65,10 @@ hard_questions = [
     {"q":"question2hard","choices":["ans1","ans2","ans3","ans4"],"answer":"ans3"},
     {"q":"question3hard","choices":["ans1","ans2","ans3","ans4"],"answer":"ans2"}
 ]
+score = 0
+total_questions = 0
+quiz_stat = False
+time = 0
 difficulty = None
 current_q = 0
 show_feedback = False
@@ -135,6 +139,28 @@ def draw_difficulty_menu():
     back_text = button_font.render("BACK", True, BLACK)
     screen.blit(back_text, (back_btn.centerx - back_text.get_width() / 2, back_btn.centery - back_text.get_height() / 2))
     return back_btn
+def draw_score_and_done():
+    global quiz_stat, time, in_quiz, in_difficulty, current_q
+    if quiz_stat:
+        text = f"Your Score: {score}/{total_questions}"
+        max_width = 400
+        font_size = 40
+        font_used = pygame.font.Font(None, font_size)
+        while font_used.size(text)[0] > max_width and font_size > 10:
+            font_size -= 2
+            font_used = pygame.font.Font(None, font_size)
+        text_width, text_height = font_used.size(text)
+        padding_w = 60 
+        padding_h = 20
+        button_temp = pygame.transform.scale(button_bg, (text_width + padding_w, text_height + padding_h))
+        screen.blit(button_temp, (400 - button_temp.get_width() / 2, 480))
+        result_text = font_used.render(text, True, BLACK)
+        screen.blit(result_text, (400 - result_text.get_width() / 2, 480 + (button_temp.get_height() - result_text.get_height()) / 2))
+        if pygame.time.get_ticks() - time > 3000:
+            quiz_stat = False
+            in_quiz = False
+            in_difficulty = False
+            current_q = 0
 def draw_easy_quiz():
     global show_feedback, feedback_correct, feedback_time, current_q, answered
     screen.blit(bg_img, (0, 0))
@@ -172,6 +198,10 @@ def draw_easy_quiz():
     else:
         done_txt = font_q.render(".......!", True, BLACK)
         screen.blit(done_txt, (400 - done_txt.get_width() / 2, 280))
+        global quiz_stat, time
+        if not quiz_stat:
+            quiz_stat = True
+            time = pygame.time.get_ticks()
     if show_feedback:
         img = check_img if feedback_correct else x_img
         screen.blit(img, (360, 240))
@@ -217,6 +247,10 @@ def draw_normal_quiz():
     else:
         done_txt = font_q.render("q2 done!", True, BLACK)
         screen.blit(done_txt, (400 - done_txt.get_width() / 2, 280))
+        global quiz_stat, time
+        if not quiz_stat:
+            quiz_stat = True
+            time = pygame.time.get_ticks()
     if show_feedback:
         img = check_img if feedback_correct else x_img
         screen.blit(img, (360, 240))
@@ -262,6 +296,10 @@ def draw_hard_quiz():
     else:
         done_txt = font_q.render("hard questions done!", True, BLACK)
         screen.blit(done_txt, (400 - done_txt.get_width() / 2, 280))
+        global quiz_stat, time
+        if not quiz_stat:
+            quiz_stat = True
+            time = pygame.time.get_ticks()
     if show_feedback:
         img = check_img if feedback_correct else x_img
         screen.blit(img, (360, 240))
@@ -297,14 +335,23 @@ while running:
                     difficulty = "easy"
                     in_difficulty = False
                     in_quiz = True
+                    score = 0
+                    total_questions = 0
+                    total_questions = len(easy_questions)
                 elif normal_btn.collidepoint(event.pos):
                     difficulty = "normal"
                     in_difficulty = False
                     in_quiz = True
+                    score = 0
+                    total_questions = 0
+                    total_questions = len(normal_questions)
                 elif hard_btn.collidepoint(event.pos):
                     difficulty = "hard"
                     in_difficulty = False
                     in_quiz = True
+                    score = 0
+                    total_questions = 0
+                    total_questions = len(hard_questions)
             elif in_quiz and not show_feedback and not answered:
                 answer_btns = get_answer_buttons()
                 if difficulty == "easy":
@@ -313,14 +360,14 @@ while running:
                     set = normal_questions
                 elif difficulty == "hard":
                     set = hard_questions
-                else:
-                    set = []
                 if current_q < len(set):
                     answer_btns = get_answer_buttons()
                     for i, btn in enumerate(answer_btns):
                         if btn.collidepoint(event.pos):
                             selected = set[current_q]["choices"][i]
                             feedback_correct = (selected ==set[current_q]["answer"])
+                            if feedback_correct:
+                                    score += 1
                             show_feedback = True
                             feedback_time = pygame.time.get_ticks()
                             answered = True
@@ -342,6 +389,7 @@ while running:
             draw_normal_quiz()
         elif difficulty == "hard":
             draw_hard_quiz()
+        draw_score_and_done()
     pygame.display.flip()
     clock.tick(60)
 pygame.quit()
