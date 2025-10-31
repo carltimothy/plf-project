@@ -180,7 +180,7 @@ def draw_easy_quiz():
         lines.append(line)
         y_offset = 170
         for l in lines:
-            q_text = font_q.render(l.strip(), True, BLACK)
+            q_text = font_q.render(l.strip(), True, WHITE)
             screen.blit(q_text, (400 - q_text.get_width() / 2, y_offset))
             y_offset += q_text.get_height() + 5
         answer_btns = get_answer_buttons()
@@ -229,7 +229,7 @@ def draw_normal_quiz():
         lines.append(line)
         y_offset = 170
         for l in lines:
-            q_text = font_q.render(l.strip(), True, BLACK)
+            q_text = font_q.render(l.strip(), True, WHITE)
             screen.blit(q_text, (400 - q_text.get_width() / 2, y_offset))
             y_offset += q_text.get_height() + 5
         answer_btns = get_answer_buttons()
@@ -278,7 +278,7 @@ def draw_hard_quiz():
         lines.append(line)
         y_offset = 170
         for l in lines:
-            q_text = font_q.render(l.strip(), True, BLACK)
+            q_text = font_q.render(l.strip(), True, WHITE)
             screen.blit(q_text, (400 - q_text.get_width() / 2, y_offset))
             y_offset += q_text.get_height() + 5
         answer_btns = get_answer_buttons()
