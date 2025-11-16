@@ -45,6 +45,7 @@ in_difficulty = False
 in_quiz = False
 volume_slider = pygame.Rect(300, 300, 200, 10)
 volume_knob_x = 400
+dragging_volume = False
 easy_btn = pygame.Rect(800 / 2 - 225, 300, 150, 60)
 normal_btn = pygame.Rect(800 / 2 - 75, 300, 150, 60)
 hard_btn = pygame.Rect(800 / 2 + 75, 300, 150, 60)
@@ -323,10 +324,8 @@ while running:
                 back_btn = pygame.Rect(800 / 2 - 75, 600 / 2 + 60, 150, 60)
                 if back_btn.collidepoint(event.pos):
                     in_settings = False
-                elif volume_slider.collidepoint(event.pos[0], volume_slider.y):
-                    volume_knob_x = min(max(event.pos[0], volume_slider.x), volume_slider.x + volume_slider.width)
-                    volume = (volume_knob_x - volume_slider.x) / volume_slider.width
-                    pygame.mixer.music.set_volume(volume if volume > 0 else 0)
+                elif volume_slider.collidepoint(event.pos):
+                    dragging_volume = True
             elif in_difficulty:
                 back_btn = pygame.Rect(800 / 2 - 75, 450, 150, 60)
                 if back_btn.collidepoint(event.pos):
@@ -336,21 +335,18 @@ while running:
                     in_difficulty = False
                     in_quiz = True
                     score = 0
-                    total_questions = 0
                     total_questions = len(easy_questions)
                 elif normal_btn.collidepoint(event.pos):
                     difficulty = "normal"
                     in_difficulty = False
                     in_quiz = True
                     score = 0
-                    total_questions = 0
                     total_questions = len(normal_questions)
                 elif hard_btn.collidepoint(event.pos):
                     difficulty = "hard"
                     in_difficulty = False
                     in_quiz = True
                     score = 0
-                    total_questions = 0
                     total_questions = len(hard_questions)
             elif in_quiz and not show_feedback and not answered:
                 answer_btns = get_answer_buttons()
@@ -365,14 +361,16 @@ while running:
                     for i, btn in enumerate(answer_btns):
                         if btn.collidepoint(event.pos):
                             selected = set[current_q]["choices"][i]
-                            feedback_correct = (selected ==set[current_q]["answer"])
+                            feedback_correct = (selected == set[current_q]["answer"])
                             if feedback_correct:
-                                    score += 1
+                                score += 1
                             show_feedback = True
                             feedback_time = pygame.time.get_ticks()
                             answered = True
-        elif event.type == pygame.MOUSEMOTION and in_settings and event.buttons[0]:
-            if volume_slider.collidepoint(event.pos[0], volume_slider.y):
+        elif event.type == pygame.MOUSEBUTTONUP:
+            dragging_volume = False
+        elif event.type == pygame.MOUSEMOTION:
+            if dragging_volume and in_settings:
                 volume_knob_x = min(max(event.pos[0], volume_slider.x), volume_slider.x + volume_slider.width)
                 volume = (volume_knob_x - volume_slider.x) / volume_slider.width
                 pygame.mixer.music.set_volume(volume if volume > 0 else 0)
