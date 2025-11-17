@@ -52,19 +52,30 @@ hard_btn = pygame.Rect(800 / 2 + 75, 300, 150, 60)
 font_q = pygame.font.Font(None, 40)
 font_a = pygame.font.Font(None, 35)
 easy_questions = [
-    {"q":"question1","choices":["ans1","ans2","ans3","ans4"],"answer":"ans3"},
-    {"q":"question2","choices":["ans1","ans2","ans3","ans4"],"answer":"ans2"},
-    {"q":"question3","choices":["ans1","ans2","ans3","ans4"],"answer":"ans2"}
+    {"q":"What color do you get when you mix red and blue?","choices":["Purple","Green","Orange","Pink"],"answer":"Purple"},
+    {"q":"Which planet is closest to the Sun?","choices":["Mercury","Venus","Earth","Mars"],"answer":"Mercury"},
+    {"q":"What is H2O commonly known as?","choices":["Hydrogen","Oxygen","Water","Salt"],"answer":"Water"},
+    {"q":"Which animal lays eggs?","choices":["Dog","Cat","Chicken","Elephant"],"answer":"Chicken"},
+    {"q":"What is the main language spoken in Spain?","choices":["Spanish","French","Italian","Portuguese"],"answer":"Spanish"}
 ]
 normal_questions = [
-    {"q":"question1normal","choices":["ans1","ans2","ans3","ans4"],"answer":"ans1"},
-    {"q":"question2normal","choices":["ans1","ans2","ans3","ans4"],"answer":"ans2"},
-    {"q":"question3normal","choices":["ans1","ans2","ans3","ans4"],"answer":"ans3"}
+    {"q":"Who painted the Mona Lisa?","choices":["Leonardo da Vinci","Pablo Picasso","Vincent van Gogh","Michelangelo"],"answer":"Leonardo da Vinci"},
+    {"q":"What gas do humans exhale?","choices":["Oxygen","Carbon Dioxide","Nitrogen","Hydrogen"],"answer":"Carbon Dioxide"},
+    {"q":"What is the freezing point of water in Celsius?","choices":["0","32","100","-10"],"answer":"0"},
+    {"q":"Which organ pumps blood throughout the body?","choices":["Lungs","Liver","Heart","Kidneys"],"answer":"Heart"},
+    {"q":"Which country is known as the Land of the Rising Sun?","choices":["China","Japan","Thailand","South Korea"],"answer":"Japan"}
 ]
 hard_questions = [
-    {"q":"question1hard","choices":["ans1","ans2","ans3","ans4"],"answer":"ans4"},
-    {"q":"question2hard","choices":["ans1","ans2","ans3","ans4"],"answer":"ans3"},
-    {"q":"question3hard","choices":["ans1","ans2","ans3","ans4"],"answer":"ans2"}
+    {"q":"What is the chemical formula for table salt?","choices":["NaCl","KCl","H2O","CO2"],"answer":"NaCl"},
+    {"q":"Which planet has the most moons?","choices":["Earth","Mars","Jupiter","Saturn"],"answer":"Saturn"},
+    {"q":"Who developed the theory of general relativity?","choices":["Isaac Newton","Galileo Galilei","Albert Einstein","Nikola Tesla"],"answer":"Albert Einstein"},
+    {"q":"In literature, who is the author of '1984'?","choices":["George Orwell","Aldous Huxley","J.K. Rowling","Mark Twain"],"answer":"George Orwell"},
+    {"q":"Which blood type is known as the universal donor?","choices":["A","B","AB","O"],"answer":"O"},
+    {"q":"What is the value of pi to two decimal places?","choices":["3.14","3.15","3.13","3.12"],"answer":"3.14"},
+    {"q":"Which element is liquid at room temperature?","choices":["Mercury","Iron","Gold","Sodium"],"answer":"Mercury"},
+    {"q":"In physics, what is the unit of force?","choices":["Joule","Newton","Pascal","Watt"],"answer":"Newton"},
+    {"q":"Which country invented paper?","choices":["China","Egypt","Greece","India"],"answer":"China"},
+    {"q":"What is the largest organ in the human body?","choices":["Heart","Skin","Liver","Lungs"],"answer":"Skin"}
 ]
 score = 0
 total_questions = 0
