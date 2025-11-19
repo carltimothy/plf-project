@@ -1,7 +1,7 @@
 import pygame
 
 pygame.init()
-icon = pygame.image.load("assets/Cute-Dinosaur-Left.png")
+icon = pygame.image.load("assets\Cute-Dinosaur-Left.png")
 pygame.display.set_icon(icon)
 screen = pygame.display.set_mode((800, 600))
 pygame.display.set_caption("Dino Discovery!")
@@ -12,17 +12,20 @@ BLACK = (0, 0, 0)
 GRAY = (180, 180, 180)
 PURPLE = (221, 51, 255)
 title_font = pygame.font.Font(None, 48)
+subtitle_font = pygame.font.Font(None, 40)
 button_font = pygame.font.Font(None, 40)
+role_font = pygame.font.SysFont(None, 44)
+creds_button_font = pygame.font.SysFont(None, 40)
 settings_button_font = pygame.font.Font(None, 40)
-bg_img = pygame.image.load('assets/menu.jpeg').convert()
+bg_img = pygame.image.load('assets\menu.jpeg').convert()
 bg_img = pygame.transform.scale(bg_img, (800, 600))
-dino_img = pygame.image.load('assets/Cute-Dinosaur.png').convert_alpha()
-dino_left_img = pygame.image.load('assets/Cute-Dinosaur-Left.png').convert_alpha()
-nugget_img = pygame.image.load('assets/nuggies.webp').convert_alpha()
-button_bg = pygame.image.load('assets/button-large.png').convert_alpha()
-main_ui_img = pygame.image.load('assets/main-ui.png').convert_alpha()
-check_img = pygame.image.load('assets/check.gif').convert_alpha()
-x_img = pygame.image.load('assets/x.gif').convert_alpha()
+dino_img = pygame.image.load('assets\Cute-Dinosaur.png').convert_alpha()
+dino_left_img = pygame.image.load('assets\Cute-Dinosaur-Left.png').convert_alpha()
+nugget_img = pygame.image.load('assets\nuggies.webp').convert_alpha()
+button_bg = pygame.image.load('assets\button-large.png').convert_alpha()
+main_ui_img = pygame.image.load('assets\main-ui.png').convert_alpha()
+check_img = pygame.image.load('assets\check.gif').convert_alpha()
+x_img = pygame.image.load('assets\x.gif').convert_alpha()
 dino_img = pygame.transform.scale(dino_img, (500, 500))
 dino_left_img = pygame.transform.scale(dino_left_img, (500, 500))
 nugget_img = pygame.transform.scale(nugget_img, (100, 90))
@@ -30,7 +33,7 @@ button_bg = pygame.transform.scale(button_bg, (150, 60))
 main_ui_img = pygame.transform.scale(main_ui_img, (600, 350))
 check_img = pygame.transform.scale(check_img, (80, 80))
 x_img = pygame.transform.scale(x_img, (80, 80))
-pygame.mixer.music.load("assets/bg_music.mp3")
+pygame.mixer.music.load("assets\bg_music.mp3")
 pygame.mixer.music.set_volume(0.5)
 pygame.mixer.music.play(-1)
 dino_rect = dino_img.get_rect(topleft=(550, 200))
@@ -41,6 +44,7 @@ play_btn = pygame.Rect(800 / 2 - 200, 600 / 2 + 60, 150, 60)
 menu_btn = pygame.Rect(800 / 2 + 50, 600 / 2 + 60, 150, 60)
 menu_box = pygame.Rect(100, 120, 600, 350)
 in_settings = False
+in_creds = False
 in_difficulty = False
 in_quiz = False
 volume_slider = pygame.Rect(300, 300, 200, 10)
@@ -114,6 +118,22 @@ def draw_main_menu():
     screen.blit(dino_left_img, dino_rect_left)
     for pos in nuggets_positions:
         screen.blit(nugget_img, pos)
+def draw_creds():
+    screen.blit(bg_img, (0, 0))
+    pygame.draw.rect(screen, WHITE, menu_box, border_radius=20)
+    pygame.draw.rect(screen, BLACK, menu_box, 4, border_radius=20)
+    title_text = title_font.render("Credits", True, BLACK)
+    screen.blit(title_text, (menu_box.centerx - title_text.get_width() / 2, 160))
+    creds_txt = creds_button_font.render("Carl Timothy Ligutom", True, BLACK)
+    screen.blit(creds_txt, (menu_box.centerx - title_text.get_width() / 0.9, 230))
+    creds2_txt = creds_button_font.render("", True, BLACK)
+    screen.blit(creds2_txt, (menu_box.centerx - title_text.get_width() / 0.9, 270))
+    back_btn = pygame.Rect(800 / 2 - 75, 600 / 2 + 60, 150, 60)
+    screen.blit(button_bg, back_btn)
+    back_text = button_font.render("BACK", True, BLACK)
+    screen.blit(back_text,
+                (back_btn.centerx - back_text.get_width() / 2, back_btn.centery - back_text.get_height() / 2))
+    return back_btn
 def draw_settings_menu(volume_knob_x):
     screen.blit(bg_img, (0, 0))
     pygame.draw.rect(screen, WHITE, menu_box, border_radius=20)
@@ -127,7 +147,12 @@ def draw_settings_menu(volume_knob_x):
     volume = (volume_knob_x - volume_slider.x) / volume_slider.width
     volume_percent = settings_button_font.render(f"{int(volume*100)}%", True, BLACK)
     screen.blit(volume_percent, (volume_slider.x + volume_slider.width + 20, volume_slider.y - 10))
-    back_btn = pygame.Rect(800 / 2 - 75, 600 / 2 + 60, 150, 60)
+    creds_btn = pygame.Rect((1100 / 2 - 75, 600 / 2 + 60, 150, 60))
+    creds_txt = button_font.render("CREDITS", True, BLACK)
+    screen.blit(button_bg, creds_btn)
+    screen.blit(creds_txt,
+                (creds_btn.centerx - creds_txt.get_width() / 2, creds_btn.centery - creds_txt.get_height() / 2))
+    back_btn = pygame.Rect(500 / 2 - 75, 600 / 2 + 60, 150, 60)
     screen.blit(button_bg, back_btn)
     back_text = button_font.render("BACK", True, BLACK)
     screen.blit(back_text, (back_btn.centerx - back_text.get_width() / 2, back_btn.centery - back_text.get_height() / 2))
@@ -162,7 +187,7 @@ def draw_score_and_done():
             font_size -= 2
             font_used = pygame.font.Font(None, font_size)
         text_width, text_height = font_used.size(text)
-        padding_w = 60 
+        padding_w = 60
         padding_h = 20
         button_temp = pygame.transform.scale(button_bg, (text_width + padding_w, text_height + padding_h))
         screen.blit(button_temp, (400 - button_temp.get_width() / 2, 480))
@@ -208,7 +233,7 @@ def draw_easy_quiz():
                 txt_surface = temp_font.render(c, True, BLACK)
             screen.blit(txt_surface, (btn.centerx - txt_surface.get_width() / 2 - 25, btn.centery - txt_surface.get_height() / 2 - 3))
     else:
-        done_txt = font_q.render(".......!", True, BLACK)
+        done_txt = font_q.render("Easy Questions Done!", True, WHITE)
         screen.blit(done_txt, (400 - done_txt.get_width() / 2, 280))
         global quiz_stat, time
         if not quiz_stat:
@@ -222,6 +247,12 @@ def draw_easy_quiz():
             answered = False
             if feedback_correct:
                 current_q += 1
+    back_btn = pygame.Rect(800 / 2 - 75, 750 / 2 + 60, 150, 60)
+    screen.blit(button_bg, back_btn)
+    back_text = button_font.render("BACK", True, BLACK)
+    screen.blit(back_text,
+                (back_btn.centerx - back_text.get_width() / 2, back_btn.centery - back_text.get_height() / 2))
+    return back_btn
 def draw_normal_quiz():
     global show_feedback, feedback_correct, feedback_time, current_q, answered
     screen.blit(bg_img, (0, 0))
@@ -257,7 +288,7 @@ def draw_normal_quiz():
                 txt_surface = temp_font.render(c, True, BLACK)
             screen.blit(txt_surface, (btn.centerx - txt_surface.get_width() / 2 - 25, btn.centery - txt_surface.get_height() / 2 - 3))
     else:
-        done_txt = font_q.render("q2 done!", True, BLACK)
+        done_txt = font_q.render("Normal Questions Done!", True, WHITE)
         screen.blit(done_txt, (400 - done_txt.get_width() / 2, 280))
         global quiz_stat, time
         if not quiz_stat:
@@ -306,7 +337,7 @@ def draw_hard_quiz():
                 txt_surface = temp_font.render(c, True, BLACK)
             screen.blit(txt_surface, (btn.centerx - txt_surface.get_width() / 2 - 25, btn.centery - txt_surface.get_height() / 2 - 3))
     else:
-        done_txt = font_q.render("hard questions done!", True, BLACK)
+        done_txt = font_q.render("Hard Questions Done!", True, WHITE)
         screen.blit(done_txt, (400 - done_txt.get_width() / 2, 280))
         global quiz_stat, time
         if not quiz_stat:
@@ -331,12 +362,23 @@ while running:
                     in_difficulty = True
                 elif menu_btn.collidepoint(event.pos):
                     in_settings = True
-            elif in_settings:
+            elif in_creds:
                 back_btn = pygame.Rect(800 / 2 - 75, 600 / 2 + 60, 150, 60)
+                if back_btn.collidepoint(event.pos):
+                    """Debug back button for position"
+                    print(f"Back button clicked at {event.pos}")"""
+                    in_creds = False
+            elif in_settings:
+                back_btn = pygame.Rect(500 / 2 - 75, 600 / 2 + 60, 150, 60)
+                creds_btn = pygame.Rect(1100 / 2 - 75, 600 / 2 + 60, 150, 60)
                 if back_btn.collidepoint(event.pos):
                     in_settings = False
                 elif volume_slider.collidepoint(event.pos):
                     dragging_volume = True
+                elif creds_btn.collidepoint(event.pos):
+                    in_creds = True
+                    "Debug credits button"
+                    print(f"Credits Clicked at {event.pos}")
             elif in_difficulty:
                 back_btn = pygame.Rect(800 / 2 - 75, 450, 150, 60)
                 if back_btn.collidepoint(event.pos):
@@ -387,6 +429,8 @@ while running:
                 pygame.mixer.music.set_volume(volume if volume > 0 else 0)
     if not in_settings and not in_difficulty and not in_quiz:
         draw_main_menu()
+    elif in_creds:
+        back_btn = draw_creds()
     elif in_settings:
         back_btn = draw_settings_menu(volume_knob_x)
     elif in_difficulty:
