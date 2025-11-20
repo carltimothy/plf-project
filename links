@@ -1,3 +1,5 @@
 wrong - https://www.shutterstock.com/image-vector/danger-dinosaur-making-flame-color-260nw-1085117939.jpg
 main menu bg - https://www.freepik.com/premium-vector/pixel-background-with-forest-games-mobile-applications-seamless-when-docking-horizontally_132089748.htm
 script = pyinstaller --onefile --hide-console hide-early -i C:\Users\STUDENTS\Downloads\Cute-Dinosaur-Left.ico D:\output\dinodiscover.py
+
+pyinstaller --onefile --hide-console hide-early -i '/workspaces/plf-project/assets/Cute-Dinosaur-Left.ico' '/workspaces/plf-project/Dino Discover.py' --version-file '/workspaces/plf-project/version.txt' --splash '/workspaces/plf-project/assets/Cute-Dinosaur-Left.png'
