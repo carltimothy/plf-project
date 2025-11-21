@@ -127,7 +127,7 @@ def draw_creds():
     creds_txt = creds_button_font.render("Carl Timothy Ligutom", True, BLACK)
     screen.blit(creds_txt, (menu_box.centerx - title_text.get_width() / 0.9, 230))
     creds2_txt = creds_button_font.render("Min Jung Lee", True, BLACK)
-    screen.blit(creds2_txt, (menu_box.centerx - title_text.get_width() / 0.9, 270))
+    screen.blit(creds2_txt, (menu_box.centerx - title_text.get_width() / 1.5, 270))
     back_btn = pygame.Rect(800 / 2 - 75, 600 / 2 + 60, 150, 60)
     screen.blit(button_bg, back_btn)
     back_text = button_font.render("BACK", True, BLACK)
@@ -249,7 +249,7 @@ def draw_easy_quiz():
                 current_q += 1
     back_btn = pygame.Rect(800 / 2 - 75, 750 / 2 + 60, 150, 60)
     screen.blit(button_bg, back_btn)
-    back_text = button_font.render("BACK", True, BLACK)
+    back_text = button_font.render("EXIT", True, BLACK)
     screen.blit(back_text,
                 (back_btn.centerx - back_text.get_width() / 2, back_btn.centery - back_text.get_height() / 2))
     return back_btn
@@ -302,6 +302,12 @@ def draw_normal_quiz():
             answered = False
             if feedback_correct:
                 current_q += 1
+    back_btn = pygame.Rect(800 / 2 - 75, 750 / 2 + 60, 150, 60)
+    screen.blit(button_bg, back_btn)
+    back_text = button_font.render("EXIT", True, BLACK)
+    screen.blit(back_text,
+                (back_btn.centerx - back_text.get_width() / 2, back_btn.centery - back_text.get_height() / 2))
+    return back_btn
 def draw_hard_quiz():
     global show_feedback, feedback_correct, feedback_time, current_q, answered
     screen.blit(bg_img, (0, 0))
@@ -351,6 +357,12 @@ def draw_hard_quiz():
             answered = False
             if feedback_correct:
                 current_q += 1
+    back_btn = pygame.Rect(800 / 2 - 75, 750 / 2 + 60, 150, 60)
+    screen.blit(button_bg, back_btn)
+    back_text = button_font.render("EXIT", True, BLACK)
+    screen.blit(back_text,
+                (back_btn.centerx - back_text.get_width() / 2, back_btn.centery - back_text.get_height() / 2))
+    return back_btn
 while running:
     screen.fill(WHITE)
     for event in pygame.event.get():
@@ -377,8 +389,8 @@ while running:
                     dragging_volume = True
                 elif creds_btn.collidepoint(event.pos):
                     in_creds = True
-                    "Debug credits button"
-                    print(f"Credits Clicked at {event.pos}")
+                    """"Debug credits button"
+                    print(f"Credits Clicked at {event.pos}")"""
             elif in_difficulty:
                 back_btn = pygame.Rect(800 / 2 - 75, 450, 150, 60)
                 if back_btn.collidepoint(event.pos):
@@ -389,6 +401,7 @@ while running:
                     in_quiz = True
                     score = 0
                     total_questions = len(easy_questions)
+                    back_btn = pygame.Rect(800 / 2 - 75, 750 / 2 + 60, 150, 60)
                 elif normal_btn.collidepoint(event.pos):
                     difficulty = "normal"
                     in_difficulty = False
@@ -420,6 +433,10 @@ while running:
                             show_feedback = True
                             feedback_time = pygame.time.get_ticks()
                             answered = True
+                        elif back_btn.collidepoint(event.pos):
+                            """"Debug back button for position"
+                            print(f"Back button clicked at {event.pos}")"""
+                            in_quiz = False
         elif event.type == pygame.MOUSEBUTTONUP:
             dragging_volume = False
         elif event.type == pygame.MOUSEMOTION:
