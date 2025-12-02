@@ -8,32 +8,28 @@ def Create():
         open("pass.txt", "x").close()
 
 def login():
-    print("=== LOGIN ===")
-    input_user = input("Enter username: ").strip()
-    input_pass = input("Enter password: ").strip()
-
-    user_file = open("user.txt", "r")
-    users = [u.strip() for u in user_file.readlines()]
-    user_file.close()
-
+    print("===LOGIN===")
+    inp = input("Enter username: ").strip()
+    inpp = input("Enter password: ").strip()
+    user = open("user.txt", "r")
+    users = [u.strip() for u in user.readlines()]
+    user.close()
     pass_file = open("pass.txt", "r")
     passwords = [p.strip() for p in pass_file.readlines()]
     pass_file.close()
-
-    if input_user in users:
-        index = users.index(input_user)
-        if index < len(passwords) and passwords[index] == input_pass:
-            print("Login successful!")
-            return True
+    if inp in users:
+        index = users.index(inp)
+        if users.index(inp) < len(passwords) and passwords[index] == inpp:
+            print("")
         else:
-            print("Wrong password.")
-            return False
+            print("")
+            sys.exit()
     else:
-        print("Username not found.")
-        return False
+        print("")
+        sys.exit()
 
 def signup():
-    print("=== REGISTRATION ===")
+    print("===REGISTRATION===")
     username = input("Enter a username: ").strip()
     password = input("Enter a password: ").strip()
     with open("user.txt", "a") as f:
@@ -44,12 +40,9 @@ def signup():
 def Main():
     Create()
     signup()
-    if not login():
-        print("Access denied. Exiting program.")
-        sys.exit()
-
+    login()
     while True:
-        print("==== WELCOME TO THE SYSTEM ====")
+        print("====WELCOME TO THE SYSTEM====")
         print("\n [1] Re-register"
               "\n [2] End Program")
         choice = input("Input: ")
@@ -59,7 +52,5 @@ def Main():
             os.remove("user.txt")
             os.remove("pass.txt")
             sys.exit()
-        else:
-            print("Invalid choice — enter 1 or 2.")
 
 Main()
