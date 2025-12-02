@@ -2,9 +2,9 @@ import os
 import sys
 
 def Create():
-    if not os.path.exists("user.txt"):
+    if (os.path.exists("user.txt") == False):
         open("user.txt", "x").close()
-    if not os.path.exists("pass.txt"):
+    if (os.path.exists("pass.txt") == False):
         open("pass.txt", "x").close()
 
 def login():
@@ -14,7 +14,6 @@ def login():
     user_file = open("user.txt", "r")
     pass_file = open("pass.txt", "r")
     if inp == user_file.readline().strip():
-        pass_file.readline()
         if inpp == pass_file.readline().strip():
             print("Login Successful!")
         else:
@@ -36,9 +35,12 @@ def signup():
         f.write(password + "\n")
 
 def Main():
-    Create()
-    signup()
-    login()
+    if (os.path.exists("user.txt") and os.path.exists("pass.txt")):
+        login()
+    else:
+        Create()
+        signup()
+        login()
     while True:
         print("====WELCOME TO THE SYSTEM====")
         print("\n [1] Re-register"
