@@ -13,16 +13,23 @@ def login():
     print("=== LOGIN ===")
     user = input("Enter username: ").strip()
     passw = input("Enter password: ").strip()
-    users = open("user.txt", "r")
-    users.readlines()
-    users.close()
-    password = open("pass.txt", "r")
-    password.readlines()
-    password.close()
+
+    users_file = open("user.txt", "r")
+    users = [u.strip() for u in users_file.readlines()]
+    users_file.close()
+
+    pass_file = open("pass.txt", "r")
+    passwords = [p.strip() for p in pass_file.readlines()]
+    pass_file.close()
+
     if user in users:
         index = users.index(user)
-        if index < len(password) and password[index] == passw:
+        if index < len(passwords) and passwords[index] == passw:
             print("Login Successful!")
+        else:
+            print("Wrong password.")
+    else:
+        print("Username not found.")
 
 def signup():
     print("=== USER REGISTRATION ===")
