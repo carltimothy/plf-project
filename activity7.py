@@ -54,3 +54,44 @@ def Main():
             sys.exit()
 
 Main()
+
+
+"""
+def login():
+    print("===LOGIN===")
+    inp = input("Enter username: ").strip()
+    inpp = input("Enter password: ").strip()
+
+    user_file = open("user.txt", "r")
+    pass_file = open("pass.txt", "r")
+
+    users = user_file.readlines()
+    passwords = pass_file.readlines()
+
+    user_file.close()
+    pass_file.close()
+
+    clean_users = []
+    clean_pass = []
+
+    for u in users:
+        clean_users.append(u.strip())
+
+    for p in passwords:
+        clean_pass.append(p.strip())
+
+    found = False
+    for i in range(len(clean_users)):
+        if clean_users[i] == inp:
+            found = True
+            if clean_pass[i] == inpp:
+                print("Login Successful!")
+                return
+            else:
+                print("Wrong password.")
+                sys.exit()
+
+    if not found:
+        print("Username not found.")
+        sys.exit()
+"""
