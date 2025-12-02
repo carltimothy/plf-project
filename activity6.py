@@ -37,11 +37,8 @@ def Main():
         elif choice == "2":
             os.remove("user.txt")
             os.remove("pass.txt")
-            break
+            sys.exit()
         else:
             print("Invalid choice — enter 1 or 2.")
-
-
-
 
 Main()

@@ -2,10 +2,10 @@ import os
 import sys
 
 def Create():
-    if not os.path.exists("user.txt"):
+    if (os.path.exists("user.txt") == False):
         file = open("user.txt", "x")
         file.close()
-    if not os.path.exists("pass.txt"):
+    if (os.path.exists("pass.txt") == False):
         file = open("pass.txt", "x")
         file.close()
 
@@ -13,21 +13,16 @@ def login():
     print("=== LOGIN ===")
     user = input("Enter username: ").strip()
     passw = input("Enter password: ").strip()
-
-    with open("user.txt", "r") as uf:
-        users = [u.strip() for u in uf.readlines()]
-
-    with open("pass.txt", "r") as pf:
-        passes = [p.strip() for p in pf.readlines()]
-
+    users = open("user.txt", "r")
+    users.readlines()
+    users.close()
+    password = open("pass.txt", "r")
+    password.readlines()
+    password.close()
     if user in users:
         index = users.index(user)
-        if index < len(passes) and passes[index] == passw:
-            print("Login successful!")
-            return True
-
-    print("Invalid username or password.")
-    return False
+        if index < len(password) and password[index] == passw:
+            print("Login Successful!")
 
 def signup():
     print("=== USER REGISTRATION ===")
@@ -52,7 +47,7 @@ def Main():
         elif choice == "2":
             os.remove("user.txt")
             os.remove("pass.txt")
-            break
+            sys.exit()
         else:
             print("Invalid choice — enter 1 or 2.")
 
