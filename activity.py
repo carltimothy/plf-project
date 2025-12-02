@@ -1,4 +1,4 @@
-def Addition(a, s):
+"""def Addition(a, s):
     d = a + s
     print(d)
 def Subtraction(a, s):
@@ -29,3 +29,15 @@ def Main():
     else:
         print("Not in choices")
 Main()
+
+
+"""
+
+f = open("test.txt", "w")
+f.write("Hello, World!")
+f.close()
+
+
+with open("test.txt", "r") as f:
+    content = f.read()
+    print(content)
