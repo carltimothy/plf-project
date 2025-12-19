@@ -2,7 +2,7 @@
 
 
 a = Analysis(
-    ['dist/Dino Discover.py'],
+    ['C:\\Users\\Timotea\\Documents\\code\\plf-project\\dist\\Dino Discover.py'],
     pathex=[],
     binaries=[],
     datas=[],
@@ -15,12 +15,23 @@ a = Analysis(
     optimize=0,
 )
 pyz = PYZ(a.pure)
+splash = Splash(
+    'C:\\Users\\Timotea\\Documents\\code\\plf-project\\assets\\Cute-Dinosaur-Left.png',
+    binaries=a.binaries,
+    datas=a.datas,
+    text_pos=None,
+    text_size=12,
+    minify_script=True,
+    always_on_top=True,
+)
 
 exe = EXE(
     pyz,
     a.scripts,
     a.binaries,
     a.datas,
+    splash,
+    splash.binaries,
     [],
     name='Dino Discover',
     debug=False,
@@ -35,7 +46,6 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    version='version.txt',
-    icon=['assets\\Cute-Dinosaur-Left.ico'],
-    hide_console='hide-early',
+    version='C:\\Users\\Timotea\\Documents\\code\\plf-project\\version.txt',
+    icon=['C:\\Users\\Timotea\\Documents\\code\\plf-project\\assets\\Cute-Dinosaur-Left.ico'],
 )

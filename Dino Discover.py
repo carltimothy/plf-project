@@ -1,7 +1,7 @@
 import pygame
 
 pygame.init()
-icon = pygame.image.load("D:/output/assets/Cute-Dinosaur-Left.png")
+icon = pygame.image.load("assets\Cute-Dinosaur-Left.png")
 pygame.display.set_icon(icon)
 screen = pygame.display.set_mode((800, 600))
 pygame.display.set_caption("Dino Discovery!")
@@ -17,15 +17,15 @@ button_font = pygame.font.Font(None, 40)
 role_font = pygame.font.SysFont(None, 44)
 creds_button_font = pygame.font.SysFont(None, 40)
 settings_button_font = pygame.font.Font(None, 40)
-bg_img = pygame.image.load('D:/output/assets/menu.jpeg').convert()
+bg_img = pygame.image.load('assets\menu.jpeg').convert()
 bg_img = pygame.transform.scale(bg_img, (800, 600))
-dino_img = pygame.image.load('D:/output/assets/Cute-Dinosaur.png').convert_alpha()
-dino_left_img = pygame.image.load('D:/output/assets/Cute-Dinosaur-Left.png').convert_alpha()
-nugget_img = pygame.image.load('D:/output/assets/nuggies.webp').convert_alpha()
-button_bg = pygame.image.load('D:/output/assets/button-large.png').convert_alpha()
-main_ui_img = pygame.image.load('D:/output/assets/main-ui.png').convert_alpha()
-check_img = pygame.image.load('D:/output/assets/check.gif').convert_alpha()
-x_img = pygame.image.load('D:/output/assets/x.gif').convert_alpha()
+dino_img = pygame.image.load('assets\Cute-Dinosaur.png').convert_alpha()
+dino_left_img = pygame.image.load('assets\Cute-Dinosaur-Left.png').convert_alpha()
+nugget_img = pygame.image.load(r'assets\nuggies.webp').convert_alpha()
+button_bg = pygame.image.load(r'assets\button-large.png').convert_alpha()
+main_ui_img = pygame.image.load('assets\main-ui.png').convert_alpha()
+check_img = pygame.image.load('assets\check.gif').convert_alpha()
+x_img = pygame.image.load(r'assets\x.gif').convert_alpha()
 dino_img = pygame.transform.scale(dino_img, (500, 500))
 dino_left_img = pygame.transform.scale(dino_left_img, (500, 500))
 nugget_img = pygame.transform.scale(nugget_img, (100, 90))
@@ -33,7 +33,8 @@ button_bg = pygame.transform.scale(button_bg, (150, 60))
 main_ui_img = pygame.transform.scale(main_ui_img, (600, 350))
 check_img = pygame.transform.scale(check_img, (80, 80))
 x_img = pygame.transform.scale(x_img, (80, 80))
-pygame.mixer.music.load("D:/output/assets/bg_music.mp3")
+pygame.mixer.init()
+pygame.mixer.music.load(r"assets\bg_music.mp3")
 pygame.mixer.music.set_volume(0.5)
 pygame.mixer.music.play(-1)
 dino_rect = dino_img.get_rect(topleft=(550, 200))
@@ -245,8 +246,7 @@ def draw_easy_quiz():
         if pygame.time.get_ticks() - feedback_time > 1000:
             show_feedback = False
             answered = False
-            if feedback_correct:
-                current_q += 1
+            current_q += 1
     back_btn = pygame.Rect(800 / 2 - 75, 750 / 2 + 60, 150, 60)
     screen.blit(button_bg, back_btn)
     back_text = button_font.render("BACK", True, BLACK)
@@ -300,8 +300,7 @@ def draw_normal_quiz():
         if pygame.time.get_ticks() - feedback_time > 1000:
             show_feedback = False
             answered = False
-            if feedback_correct:
-                current_q += 1
+            current_q += 1
     back_btn = pygame.Rect(800 / 2 - 75, 750 / 2 + 60, 150, 60)
     screen.blit(button_bg, back_btn)
     back_text = button_font.render("BACK", True, BLACK)
@@ -355,8 +354,7 @@ def draw_hard_quiz():
         if pygame.time.get_ticks() - feedback_time > 1000:
             show_feedback = False
             answered = False
-            if feedback_correct:
-                current_q += 1
+            current_q += 1
     back_btn = pygame.Rect(800 / 2 - 75, 750 / 2 + 60, 150, 60)
     screen.blit(button_bg, back_btn)
     back_text = button_font.render("BACK", True, BLACK)
