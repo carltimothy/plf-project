@@ -1,4 +1,6 @@
 import pygame
+from pypresence import Presence
+import time as t
 
 pygame.init()
 icon = pygame.image.load("assets\Cute-Dinosaur-Left.png")
@@ -92,6 +94,17 @@ show_feedback = False
 feedback_time = 0
 feedback_correct = False
 answered = False
+CLIENT_ID = "1464482779134824520"
+rpc = Presence(CLIENT_ID)
+rpc.connect()
+rpc.update(
+    details="Playing with cute little dinos",
+    large_image="cute_dinosaur_left",
+    small_image="cute_dinosaur_left",
+    start=t.time()
+)
+rpc_update_timer = t.time()
+
 def get_answer_buttons():
     btns = []
     start_x, start_y = 210, 240
@@ -363,6 +376,15 @@ def draw_hard_quiz():
     return back_btn
 while running:
     screen.fill(WHITE)
+    if t.time() - rpc_update_timer > 15:
+        rpc.update(
+            details="Playing with cute little dinos",
+            large_image="cute_dinosaur_left",
+            small_image="cute_dinosaur_left",
+            start=t.time()
+        )
+        rpc_update_timer = t.time()
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
