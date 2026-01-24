@@ -65,4 +65,4 @@ An **interactive educational quiz game** featuring a cute dinosaur mascot, multi
 
 <img width="799" height="598" alt="image" src="https://github.com/user-attachments/assets/0ea8b7b6-4078-4613-92d7-8e1766539f00" />
 
-## [Download](https://github.com/carltimothy/plf-project/releases)
+## [Download](https://github.com/carltimothy/plf-project/releases/download/1.2.25.6/Dino.Discover.exe)
